@@ -54,8 +54,9 @@
       mousewheel: true,
       buttondown_class: 'btn btn-default',
       buttonup_class: 'btn btn-default',
-	  buttondown_txt: '-',
-	  buttonup_txt: '+'
+      buttondown_txt: '-',
+      buttonup_txt: '+',
+      useBootstrap: true
     };
 
     var attributeMap = {
@@ -81,8 +82,9 @@
       mousewheel: 'mouse-wheel',
       buttondown_class: 'button-down-class',
       buttonup_class: 'button-up-class',
-	  buttondown_txt: 'button-down-txt',
-	  buttonup_txt: 'button-up-txt'
+      buttondown_txt: 'button-down-txt',
+      buttonup_txt: 'button-up-txt',
+      useBootstrap: 'use-bootstrap'
     };
 
     return this.each(function() {
@@ -126,7 +128,11 @@
         _hideEmptyPrefixPostfix();
         _bindEvents();
         _bindEventsInterface();
-        elements.input.css('display', 'block');
+        if (settings.useBootstrap) {
+          elements.input.css('display', 'block');
+        } else {
+          elements.input.css('display', 'inline-block');
+        }
       }
 
       function _setInitval() {
@@ -175,14 +181,29 @@
         }
 
         originalinput.data('initvalue', initval).val(initval);
-        originalinput.addClass('form-control');
+        if (settings.useBootstrap) {
+          originalinput.addClass('form-control');
 
-        if (parentelement.hasClass('input-group')) {
-          _advanceInputGroup(parentelement);
+          if (parentelement.hasClass('input-group')) {
+            _advanceInputGroup(parentelement);
+          }
+          else {
+            _buildInputGroup();
+          }
+        } else {
+          _buildMyInputGroup();
         }
-        else {
-          _buildInputGroup();
-        }
+        
+      }
+      
+      function _buildMyInputGroup() {
+        var html;
+        
+        html = '<div class="bootstrap-touchspin"><span class="' + settings.buttondown_class + ' bootstrap-touchspin-down">' + settings.buttondown_txt + '</span><span class="bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="' + settings.buttonup_class + ' bootstrap-touchspin-up">' + settings.buttonup_txt + '</span></div>';
+        
+        container = $(html).insertBefore(originalinput);
+
+        $('.bootstrap-touchspin-prefix', container).after(originalinput);
       }
 
       function _advanceInputGroup(parentelement) {
