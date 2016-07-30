@@ -25,7 +25,8 @@ $("input[class='count']").TouchSpin({
 });
 ```
 Here is the example:
-![image](./demo/customize/eample.png)
+
+![image](./demo/customize/example.png)
 
 ## License
 
